@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Deduplication App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Upload File</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <h2>Uploaded Files</h2>
+    <ul id="fileList"></ul>
+
+    <script>
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                alert(result); // Show success or duplicate message
+                fetchFiles(); // Refresh file list
+            } catch (err) {
+                alert('Error uploading file: ' + err.message);
+            }
+        });
+
+        // Fetch and display uploaded files
+        async function fetchFiles() {
+            try {
+                const response = await fetch('/files');
+                const files = await response.json();
+                const fileList = document.getElementById('fileList');
+                fileList.innerHTML = '';
+                files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.textContent = `${file.fileName.S} (Uploaded: ${file.uploadDate.S})`;
+                    fileList.appendChild(li);
+                });
+            } catch (err) {
+                console.error('Error fetching files:', err);
+            }
+        }
+
+        // Load files on page load
+        fetchFiles();
+    </script>
+</body>
+</html>

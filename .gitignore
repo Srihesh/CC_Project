@@ -1,0 +1,25 @@
+# Ignore Node.js dependencies
+backend/node_modules/
+
+# Ignore uploads folder
+backend/uploads/
+
+# Ignore metadata file
+backend/metadata.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: build/output folders
+dist/
+build/
